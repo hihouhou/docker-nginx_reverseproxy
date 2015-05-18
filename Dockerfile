@@ -16,20 +16,11 @@ RUN apt-get update && apt-get install -y nginx
 #configure proxy.conf
 COPY proxy.conf /etc/nginx/conf.d/
 
-#configure nagios.cfg
-COPY nagios.cfg /etc/nagios3/
-
-#configure nagios password default
-# htpasswd -c -b  /etc/nagios/htpasswd.users nagiosadmin admin
-COPY htpasswd.users /etc/nagios3/
-
-#configure ports.conf
-COPY ports.conf /etc/apache2/
+#configure default
+COPY default /etc/nginx/sites-enabled/
 
 
 # startup
-ADD start.sh /start.sh
-RUN chmod 0755 /start.sh
-CMD ["bash", "start.sh"]
+EXPOSE 80
 
-EXPOSE 8080/tcp
+CMD ["nginx", "-g", "daemon off;"]
